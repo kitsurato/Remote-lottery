@@ -11,7 +11,6 @@ function initGrid() {
         slot.className = 'slot';
         slot.id = 'slot-' + i;
         slot.onclick = () => pickSlot(i);
-        // 结构修改：包含数字、用户、奖品
         slot.innerHTML = `
             <span class="slot-number">${i + 1}</span>
             <span class="slot-user"></span>
@@ -84,7 +83,6 @@ function fetchStatus() {
         .catch(err => console.error(err));
 }
 
-// --- 核心改动：颜色处理逻辑 ---
 function updateUI(data) {
     document.getElementById('progress').innerText = data.taken_count;
     isRevealedState = data.is_revealed;
@@ -107,22 +105,16 @@ function updateUI(data) {
         if (slotData.taken) {
             slotDiv.classList.add('taken');
             
-            // 设置文字内容
             slotDiv.querySelector('.slot-user').innerText = slotData.user;
             
-            // 获取用户的专属色相 (Hue)
             const hue = getHueFromStr(slotData.user);
             
-            // --- 颜色微调逻辑 ---
             if (!isRevealedState) {
                 // 状态A：正常选中
-                // 亮度 45%，饱和度 70% (明亮鲜艳)
                 slotDiv.style.backgroundColor = `hsl(${hue}, 70%, 45%)`;
                 slotDiv.style.borderColor = "rgba(0,0,0,0.1)";
             } else {
                 // 状态B：已揭晓
-                // 亮度 30% (变暗)，饱和度 85% (更浓郁)，配合金色边框
-                // 这样可以让浅黄色的奖品文字更清晰
                 slotDiv.style.backgroundColor = `hsl(${hue}, 85%, 30%)`;
                 slotDiv.classList.add('revealed');
                 slotDiv.querySelector('.slot-prize').innerText = slotData.prize;
@@ -130,7 +122,7 @@ function updateUI(data) {
 
         } else {
             // 重置/未被选状态
-            slotDiv.className = 'slot'; // 清除 taken/revealed 类
+            slotDiv.className = 'slot'; 
             slotDiv.style.backgroundColor = ""; 
             slotDiv.querySelector('.slot-user').innerText = "";
             slotDiv.querySelector('.slot-prize').innerText = "???";
@@ -138,7 +130,6 @@ function updateUI(data) {
     }
 }
 
-// 修改了辅助函数，只返回 Hue 数值 (0-360)
 function getHueFromStr(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -164,5 +155,6 @@ function resetSystem() {
         if (data.success) location.reload();
     });
 }
+
 
 window.onload = initGrid;
