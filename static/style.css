@@ -1,0 +1,149 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+}
+
+h1 { color: #333; }
+
+/* 用户输入与信息区 */
+.user-input-area {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #e3f2fd;
+    border-radius: 8px;
+}
+.user-info {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    font-size: 1.1em;
+}
+.hidden { display: none; }
+
+input[type="text"], input[type="password"] { 
+    padding: 8px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;
+}
+button { 
+    padding: 8px 15px; background-color: #2196F3; color: white; 
+    border: none; border-radius: 4px; cursor: pointer;
+}
+button:hover { background-color: #1976D2; }
+
+/* 状态条 */
+.status-bar { margin: 20px 0; font-size: 1.2em; }
+.status-tag { padding: 5px 10px; border-radius: 5px; font-size: 0.8em; margin-left: 10px;}
+.status-tag.picking { background-color: #fff3cd; color: #856404; }
+.status-tag.revealed { background-color: #d4edda; color: #155724; font-weight: bold; }
+
+/* 网格系统 */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* 格子基础样式 */
+.slot {
+    aspect-ratio: 1;
+    background-color: #FF9800; /* 默认橙色 */
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    padding: 5px; /* 防止文字贴边 */
+}
+
+.slot:hover { transform: translateY(-3px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+
+/* 被选中的状态 */
+.slot.taken {
+    cursor: not-allowed;
+    transform: none;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+/* --- 揭晓状态 (重大修改) --- */
+.slot.revealed {
+    /* 删除了原来的 background-color: #4CAF50 !important; */
+    cursor: default;
+    transform: rotateY(360deg);
+    transition: transform 0.8s;
+    border: 2px solid #FFD700; /* 揭晓时加上金色边框 */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); /* 加一点光晕 */
+}
+
+/* 文字清晰度优化 */
+.slot-number { 
+    font-size: 1.5em; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.slot-user { 
+    font-size: 0.8em; 
+    margin-top: 5px; 
+    color: white; 
+    z-index: 2;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    word-break: break-all; /* 防止长名字撑破 */
+    line-height: 1.1;
+}
+
+/* 奖品文字样式 */
+.slot-prize { 
+    display: none; 
+    font-size: 0.85em; 
+    margin-top: 5px;
+    padding: 2px; 
+    color: #FFF59D; /* 浅黄色文字，与背景区分 */
+    font-weight: 900;
+    text-shadow: 1px 1px 0px #000;
+    border-top: 1px solid rgba(255,255,255,0.3); /* 加个顶部分割线 */
+    width: 90%;
+}
+
+/* 揭晓时：隐藏数字，显示奖品，但【保留用户】 */
+.slot.revealed .slot-number { display: none; } 
+.slot.revealed .slot-prize { display: block; }
+.slot.revealed .slot-user { 
+    display: block; /* 确保用户名字显示 */
+    font-size: 0.7em; /* 稍微缩小一点给奖品腾地方 */
+    opacity: 0.9;
+}
+
+/* 管理员面板 */
+.admin-panel {
+    margin-top: 50px;
+    padding: 20px;
+    border-top: 2px dashed #ccc;
+    text-align: center;
+}
+.admin-panel h3 { color: #666; font-size: 1em; }
+.admin-panel button { background-color: #e53935; }
+.admin-panel button:hover { background-color: #c62828; }
+
+@media (max-width: 600px) {
+    .grid-container { grid-template-columns: repeat(5, 1fr); }
+}
