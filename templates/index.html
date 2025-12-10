@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>年终抽奖</title>
+    <title>幸运猪猪抽奖</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>🎁 年终抽奖 🎁</h1>
+        <h1>🐷 你是什么猪 🐷</h1>
         
         <div class="user-input-area" id="inputArea">
             <label for="qqNumber">请输入QQ号验证身份：</label>
-            <input type="text" id="qqNumber" placeholder="例如：114514">
+            <input type="text" id="qqNumber" placeholder="例如：123456">
             <button onclick="login()">验证并开始</button>
         </div>
 
         <div id="userInfo" class="user-info hidden">
-            当前用户 QQ: <span id="displayQQ" style="font-weight:bold; color:#2196F3;"></span> | 
+            当前用户: <span id="displayQQ" style="font-weight:bold; color:#2196F3;"></span> | 
             剩余机会: <span id="remainCount" style="font-weight:bold; color:red; font-size: 1.2em;">0</span> 次
         </div>
 
@@ -26,16 +26,17 @@
             <span id="statusBtn" class="status-tag picking">抽选进行中...</span>
         </div>
 
-        <div class="grid-container" id="lotteryGrid">
-            </div>
+        <div class="grid-container" id="lotteryGrid"></div>
 
         <div class="admin-panel">
             <h3>🛡️ 管理员控制台</h3>
             <input type="password" id="adminPwd" placeholder="请输入管理员密码">
-            <button onclick="resetSystem()">⚠ 重置系统</button>
+            <div class="admin-btns">
+                <button onclick="earlyReveal()" class="btn-early">⏰ 提前开奖</button>
+                <button onclick="resetSystem()" class="btn-reset">⚠ 重置系统</button>
+            </div>
         </div>
     </div>
-
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

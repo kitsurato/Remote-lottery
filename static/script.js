@@ -4,7 +4,6 @@ let isRevealedState = false;
 function initGrid() {
     const grid = document.getElementById('lotteryGrid');
     if (!grid) return;
-    
     grid.innerHTML = ""; 
     for (let i = 0; i < 30; i++) {
         let slot = document.createElement('div');
@@ -37,7 +36,7 @@ function login() {
             currentQQ = qq;
             document.getElementById('inputArea').classList.add('hidden');
             document.getElementById('userInfo').classList.remove('hidden');
-            document.getElementById('displayQQ').innerText = currentQQ;
+            document.getElementById('displayQQ').innerText = data.name; // 显示名字
             document.getElementById('remainCount').innerText = data.remaining;
             alert(data.message);
         } else {
@@ -77,9 +76,7 @@ function startPolling() {
 function fetchStatus() {
     fetch('/api/status')
         .then(response => response.json())
-        .then(data => {
-            updateUI(data);
-        })
+        .then(data => { updateUI(data); })
         .catch(err => console.error(err));
 }
 
@@ -99,29 +96,28 @@ function updateUI(data) {
     for (let i = 0; i < 30; i++) {
         const slotData = data.slots[i.toString()];
         const slotDiv = document.getElementById('slot-' + i);
-        
         if (!slotDiv || !slotData) continue;
 
         if (slotData.taken) {
             slotDiv.classList.add('taken');
-            
             slotDiv.querySelector('.slot-user').innerText = slotData.user;
             
-            const hue = getHueFromStr(slotData.user);
+            // 使用名字生成独特颜色
+            const color = getDistinctColor(slotData.user);
             
             if (!isRevealedState) {
-                // 状态A：正常选中
-                slotDiv.style.backgroundColor = `hsl(${hue}, 70%, 45%)`;
+                slotDiv.style.backgroundColor = `hsl(${color.h}, ${color.s}%, ${color.l}%)`;
                 slotDiv.style.borderColor = "rgba(0,0,0,0.1)";
             } else {
-                // 状态B：已揭晓
-                slotDiv.style.backgroundColor = `hsl(${hue}, 85%, 30%)`;
+                slotDiv.style.backgroundColor = `hsl(${color.h}, ${Math.min(color.s + 10, 100)}%, ${Math.max(color.l - 15, 20)}%)`;
                 slotDiv.classList.add('revealed');
                 slotDiv.querySelector('.slot-prize').innerText = slotData.prize;
             }
-
+        } else if (isRevealedState && !slotData.taken) {
+             slotDiv.classList.add('revealed');
+             slotDiv.querySelector('.slot-prize').innerText = slotData.prize;
+             slotDiv.style.backgroundColor = "#78909c"; 
         } else {
-            // 重置/未被选状态
             slotDiv.className = 'slot'; 
             slotDiv.style.backgroundColor = ""; 
             slotDiv.querySelector('.slot-user').innerText = "";
@@ -130,18 +126,22 @@ function updateUI(data) {
     }
 }
 
-function getHueFromStr(str) {
+function getDistinctColor(str) {
+    if (!str) return { h: 0, s: 0, l: 50 };
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
-    return Math.abs(hash % 360);
+    const goldenAngle = 137.508; 
+    const hue = Math.abs((hash * goldenAngle) % 360);
+    const saturation = 65 + (Math.abs(hash) % 20); 
+    const lightness = 40 + (Math.abs(hash) % 10);
+    return { h: hue, s: saturation, l: lightness };
 }
 
 function resetSystem() {
     const pwd = document.getElementById('adminPwd').value;
     if (!pwd) { alert("请输入管理员密码！"); return; }
-    
     if(!confirm("⚠️ 警告：这将清除所有记录！确定要重置吗？")) return;
 
     fetch('/api/admin/reset', {
@@ -150,11 +150,21 @@ function resetSystem() {
         body: JSON.stringify({ password: pwd })
     })
     .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-        if (data.success) location.reload();
-    });
+    .then(data => { alert(data.message); if (data.success) location.reload(); });
 }
 
+function earlyReveal() {
+    const pwd = document.getElementById('adminPwd').value;
+    if (!pwd) { alert("请输入管理员密码！"); return; }
+    if(!confirm("⚠️ 确定要在人数未满的情况下【提前开奖】吗？")) return;
+
+    fetch('/api/admin/early_reveal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd })
+    })
+    .then(res => res.json())
+    .then(data => { alert(data.message); if (data.success) fetchStatus(); });
+}
 
 window.onload = initGrid;

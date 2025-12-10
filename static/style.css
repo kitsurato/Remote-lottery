@@ -1,139 +1,91 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
+    display: flex; justify-content: center;
+    padding: 20px; margin: 0; min-height: 100vh;
 }
-
 .container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    text-align: center;
-    max-width: 800px;
-    width: 100%;
+    background-color: white; padding: 30px; border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;
+    max-width: 800px; width: 100%; box-sizing: border-box;
 }
-
-h1 { color: #333; }
+h1 { color: #333; margin-top: 0; font-size: 1.8rem; }
 
 .user-input-area {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #e3f2fd;
-    border-radius: 8px;
+    margin-bottom: 20px; padding: 15px; background: #e3f2fd;
+    border-radius: 8px; display: flex; justify-content: center;
+    align-items: center; flex-wrap: wrap; gap: 10px;
 }
 .user-info {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #e8f5e9;
-    border: 1px solid #c8e6c9;
-    border-radius: 8px;
-    font-size: 1.1em;
+    margin-bottom: 20px; padding: 10px; background-color: #e8f5e9;
+    border: 1px solid #c8e6c9; border-radius: 8px; font-size: 1.1em;
 }
 .hidden { display: none; }
 
-input[type="text"], input[type="password"] { 
-    padding: 8px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;
-}
-button { 
-    padding: 8px 15px; background-color: #2196F3; color: white; 
-    border: none; border-radius: 4px; cursor: pointer;
-}
+input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+button { padding: 10px 20px; background-color: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; white-space: nowrap; }
 button:hover { background-color: #1976D2; }
 
-.status-bar { margin: 20px 0; font-size: 1.2em; }
-.status-tag { padding: 5px 10px; border-radius: 5px; font-size: 0.8em; margin-left: 10px;}
+.status-bar { margin: 20px 0; font-size: 1.2em; display: flex; justify-content: center; gap: 10px; }
+.status-tag { padding: 5px 10px; border-radius: 5px; font-size: 0.8em; }
 .status-tag.picking { background-color: #fff3cd; color: #856404; }
 .status-tag.revealed { background-color: #d4edda; color: #155724; font-weight: bold; }
 
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr); 
-    gap: 10px;
-    margin-top: 20px;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 20px;
 }
-
 .slot {
-    aspect-ratio: 1;
-    background-color: #FF9800;
-    color: white;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-    padding: 5px;
+    aspect-ratio: 1; background-color: #FF9800; color: white;
+    border-radius: 8px; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; cursor: pointer;
+    font-weight: bold; transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15); position: relative;
+    overflow: hidden; padding: 2px; user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
+.slot:active { transform: scale(0.95); }
+.slot:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
-.slot:hover { transform: translateY(-3px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
-
-.slot.taken {
-    cursor: not-allowed;
-    transform: none;
-    border: 2px solid rgba(255,255,255,0.3);
-}
-
+.slot.taken { cursor: not-allowed; border: 2px solid rgba(255,255,255,0.4); }
 .slot.revealed {
-    cursor: default;
-    transform: rotateY(360deg);
-    transition: transform 0.8s;
-    border: 2px solid #FFD700;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    cursor: default; transform: rotateY(360deg); transition: transform 0.8s;
+    border: 2px solid #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-.slot-number { 
-    font-size: 1.5em; 
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
+.slot-number { font-size: 1.8em; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
 .slot-user { 
-    font-size: 0.8em; 
-    margin-top: 5px; 
-    color: white; 
-    z-index: 2;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    word-break: break-all;
-    line-height: 1.1;
+    font-size: 0.75em; margin-top: 2px; color: white; z-index: 2;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8); width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-
 .slot-prize { 
-    display: none; 
-    font-size: 0.85em; 
-    margin-top: 5px;
-    padding: 2px; 
-    color: #FFF59D;
-    font-weight: 900;
-    text-shadow: 1px 1px 0px #000;
-    border-top: 1px solid rgba(255,255,255,0.3);
-    width: 90%;
+    display: none; font-size: 0.8em; line-height: 1.2; margin-top: 2px;
+    padding: 2px; color: #FFF59D; font-weight: 900;
+    text-shadow: 1px 1px 0px #000; border-top: 1px solid rgba(255,255,255,0.3);
+    width: 95%; word-break: break-all;
 }
-
 .slot.revealed .slot-number { display: none; } 
 .slot.revealed .slot-prize { display: block; }
-.slot.revealed .slot-user { 
-    display: block;
-    font-size: 0.7em;
-    opacity: 0.9;
-}
+.slot.revealed .slot-user { display: block; opacity: 0.9; font-size: 0.7em; }
 
-.admin-panel {
-    margin-top: 50px;
-    padding: 20px;
-    border-top: 2px dashed #ccc;
-    text-align: center;
-}
-.admin-panel h3 { color: #666; font-size: 1em; }
-.admin-panel button { background-color: #e53935; }
-.admin-panel button:hover { background-color: #c62828; }
+.admin-panel { margin-top: 40px; padding: 20px; border-top: 2px dashed #e0e0e0; }
+.admin-btns { display: flex; gap: 10px; margin-top: 10px; }
+.admin-panel input { width: 100%; max-width: 300px; box-sizing: border-box; margin-bottom: 10px;}
+.btn-early { background-color: #FF9800; flex: 1; }
+.btn-early:hover { background-color: #F57C00; }
+.btn-reset { background-color: #e53935; flex: 1; }
+.btn-reset:hover { background-color: #d32f2f; }
 
 @media (max-width: 600px) {
-    .grid-container { grid-template-columns: repeat(5, 1fr); }
-
+    body { padding: 10px; background-color: #fff; }
+    .container { padding: 15px 10px; box-shadow: none; }
+    h1 { font-size: 1.5rem; }
+    .user-input-area { flex-direction: column; align-items: stretch; }
+    input { width: 100%; box-sizing: border-box; }
+    button { width: 100%; margin-top: 5px; }
+    .grid-container { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .slot { border-radius: 6px; }
+    .slot-prize { font-size: 0.75em; }
+    .admin-btns { flex-direction: column; }
+    .admin-panel input { max-width: 100%; }
 }
